@@ -102,6 +102,10 @@ header,
 hgroup,
 menu,
 nav,
+a {
+  text-decoration: none;
+  color: initial;
+}
 section {
   display: block;
 }
@@ -129,11 +133,15 @@ table {
 }
 /** end reset css**/
 body {
+  display: flex;
+  flex-direction: column;
   max-width: 1140px;
   margin: auto;
   font-family: "Work Sans";
   font-size: 14px;
+  background-color: rgba(255, 254, 248, 1);
 }
+
 header {
   display: flex;
   justify-content: space-between;
@@ -246,6 +254,44 @@ li:hover {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+form {
+  margin: 8%;
+  display: flex;
+  justify-content: center;
+}
+
+form h2 {
+  margin-bottom: 20px;
+}
+
+form a {
+  text-decoration: underline;
+}
+
+form input[type="text"] {
+  margin-bottom: 20px;
+}
+
+.login-case {
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-case label {
+  align-self: flex-start;
+}
+
+.login-case input {
+  height: 37px;
+  width: 100%;
+  border: none;
+  background-color: white;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
 input[type="submit"] {
   font-family: "Syne";
   font-weight: 700;
@@ -257,8 +303,16 @@ input[type="submit"] {
   border-radius: 60px;
 }
 
+footer {
+  background-color: white;
+}
+
 footer nav ul {
   display: flex;
   justify-content: flex-end;
   margin: 2em;
+}
+
+form input[type="submit"] {
+  height: 40px;
 }
