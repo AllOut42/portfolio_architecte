@@ -12,32 +12,34 @@
     />
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
-    <script src="assets/js/script.js"></script>
+    <script src="./assets/js/login.js"></script>
   </head>
-  <header>
-    <a href="index.html">
-      <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-    </a>
-    <nav>
-      <ul>
-        <li>projets</li>
-        <li>contact</li>
-        <li>login</li>
-        <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
-      </ul>
-    </nav>
-  </header>
   <body>
+    <header>
+      <a href="index.html">
+        <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+      </a>
+      <nav>
+        <ul>
+          <li>projets</li>
+          <li>contact</li>
+          <li>login</li>
+          <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
+        </ul>
+      </nav>
+    </header>
+
     <main>
+      <h2>Log in</h2>
+      <label>E-mail</label>
       <form>
         <div class="login-case">
-          <h2>Log in</h2>
-          <label>E-mail</label>
-          <input type="text" name="email" required />
+          <label>Email</label>
+          <input type="text" name="email" id="email" />
           <label>Password</label>
-          <input type="password" name="mdp" required />
-          <input type="submit" value="Se connecter" />
-          <a href="#">Mot de pass oublié ?</a>
+          <input type="password" name="mdp" id="mdp" />
+          <input type="submit" id="myLogin" value="Se connecter" />
+          <span id="error"></span>
         </div>
       </form>
     </main>

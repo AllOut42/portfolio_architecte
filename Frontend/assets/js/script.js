@@ -2,16 +2,28 @@
 // 2 : Créer les boutons dans le DOM
 // 3 : Au clic sur un bouton trier les catégories
 
+document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  const banner = document.getElementById("banner");
+  console.log(token);
+
+  if (token) {
+    banner.style.display = "block";
+  }
+});
+
 async function getFilters() {
   const response = await fetch("http://localhost:5678/api/categories");
   const data = await response.json();
 
   const filters = document.getElementById("filters");
   const allButton = createFilterButton("0", "Tous");
+  allButton.classList.add("filter-button");
   filters.appendChild(allButton);
 
   data.forEach((item) => {
     const button = createFilterButton(item.id, item.name);
+    button.classList.add("filter-button");
     filters.appendChild(button);
   });
 

@@ -316,3 +316,16 @@ footer nav ul {
 form input[type="submit"] {
   height: 40px;
 }
+
+#banner {
+  display: none;
+}
+
+.filter-button {
+  background: red;
+  padding: 10px;
+}
+
+.active {
+  background: #b1663c;
+}
