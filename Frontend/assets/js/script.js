@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log(token);
 
   if (token) {
-    banner.style.display = "block";
+    banner.style.display = "flex";
   }
 });
 
