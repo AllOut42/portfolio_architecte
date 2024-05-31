@@ -5,11 +5,21 @@
 document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token");
   const banner = document.getElementById("banner");
-  console.log(token);
+  const login = document.getElementById("login");
+  const logout = document.getElementById("logout");
 
   if (token) {
     banner.style.display = "flex";
+    login.style.display = "none";
+    logout.style.display = "block";
   }
+
+  logout.addEventListener("click", function () {
+    if (token) {
+      localStorage.removeItem("token");
+      location.reload();
+    }
+  });
 });
 
 async function getFilters() {

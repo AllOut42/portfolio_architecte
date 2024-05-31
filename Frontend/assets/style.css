@@ -133,7 +133,7 @@ table {
 }
 /** end reset css**/
 body {
-  display: flex;
+  display: block;
   align-items: center;
   flex-direction: column;
   min-width: 100%;
@@ -190,6 +190,7 @@ nav li {
 
 li:hover {
   color: #b1663c;
+  cursor: pointer;
 }
 #introduction {
   display: flex;
@@ -260,6 +261,10 @@ li:hover {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+ul span {
+  font-weight: bold;
+}
+
 form {
   margin: 8%;
   display: flex;
@@ -307,6 +312,16 @@ input[type="submit"] {
   width: 180px;
   text-align: center;
   border-radius: 60px;
+  cursor: pointer;
+}
+
+input[type="submit"]:active {
+  background-color: rgba(14, 47, 40, 1);
+}
+
+.login-case p {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 footer {
@@ -323,6 +338,10 @@ form input[type="submit"] {
   height: 40px;
 }
 
+#logout {
+  display: none;
+}
+
 #banner {
   display: none;
   justify-content: center;
@@ -336,11 +355,24 @@ form input[type="submit"] {
   gap: 8px;
 }
 
+#filters {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 2em;
+}
+
 .filter-button {
-  background: red;
+  background-color: white;
+  border: #1d6154 solid 2px;
+  border-radius: 60px;
   padding: 10px;
+  font-family: "Syne";
+  font-size: 16px;
+  color: #1d6154;
 }
 
 .active {
-  background: #b1663c;
+  background-color: #1d6154;
+  color: white;
 }
