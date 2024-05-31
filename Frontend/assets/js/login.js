@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const email = document.getElementById("email");
   const mdp = document.getElementById("mdp");
   const myLogin = document.getElementById("myLogin");
-  console.log(myLogin);
 
   function checkField() {
     if (email.value == "" || mdp.value == "") {
