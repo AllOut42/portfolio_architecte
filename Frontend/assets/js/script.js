@@ -8,16 +8,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const login = document.getElementById("login");
   const logout = document.getElementById("logout");
 
-  if (token) {
-    banner.style.display = "flex";
-    login.style.display = "none";
-    logout.style.display = "block";
+  function CheckToken() {
+    if (localStorage.getItem("token")) {
+      banner.style.display = "flex";
+      login.style.display = "none";
+      logout.style.display = "block";
+    } else {
+      banner.style.display = "none";
+      login.style.display = "block";
+      logout.style.display = "none";
+    }
   }
+  CheckToken();
 
   logout.addEventListener("click", function () {
     if (token) {
       localStorage.removeItem("token");
-      location.reload();
+      CheckToken();
     }
   });
 });
