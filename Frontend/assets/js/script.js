@@ -7,16 +7,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const banner = document.getElementById("banner");
   const login = document.getElementById("login");
   const logout = document.getElementById("logout");
+  const editModale = document.getElementById("editModaleBtn");
 
   function CheckToken() {
     if (localStorage.getItem("token")) {
       banner.style.display = "flex";
       login.style.display = "none";
       logout.style.display = "block";
+      editModale.style.display = "flex";
     } else {
       banner.style.display = "none";
       login.style.display = "block";
       logout.style.display = "none";
+      editModale.style.display = "none";
     }
   }
   CheckToken();
@@ -59,7 +62,62 @@ async function getWorks(categoryId = 0) {
     const data = await response.json();
 
     const gallery = document.querySelector(".gallery");
+    const modalContent = document.querySelector(".modalContent");
     gallery.innerHTML = "";
+    modalContent.innerHTML = "";
+
+    // 1 : Je récupérer les élements depuis l'api
+    // 2 : Afficher les éléments dans le DOM (Modal)
+    // 3 : Afficher une poubelle sur chaque élément (Modal)
+    // 4 : Au clic sur la poubelle supprimer l'élément depuis l'api
+    // 5 : On recharge GETWorks()
+    // 6 : STEP 2 de la modale (AJOUT)
+    // 7 : Ajouter un bouton ajouter un work
+    // 8 : Récupérer l'image, le titre et la catégorie
+    // 8a : La catégorie doit être un select qui récupère les catégories depuis l'api
+    // 9 : Si toutes les données sont saisie correctement on post SUR l'api
+    // 9 a: En cas d'erreur on bloque et msg d'erreur.
+    // 10 : On recharge GETWorks() pour afficher les nouveaux résultats.
+
+    const figureModal = document.createElement("figure");
+    data.forEach(({ id, imageUrl, title }) => {
+      const figure_modal = document.createElement("figure");
+      const img = document.createElement("img");
+      const trash = document.createElement("i");
+      trash.className = "fas fa-trash-alt";
+      img.src = imageUrl;
+      img.alt = title;
+      img.classList = "toto";
+      figure_modal.appendChild(img);
+      figure_modal.appendChild(trash);
+      modalContent.appendChild(figure_modal);
+
+      /*figureModal.innerHTML += `
+      <img src="${imageUrl}" alt="${title}" class="toto"/>
+      <i class="fas fa-trash-alt"></i>
+      `;
+      */
+
+      trash.addEventListener("click", async function (e) {
+        e.preventDefault();
+        console.log("delete", id);
+        try {
+          const response = await fetch(
+            `http://localhost:5678/api/works/${id}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          ).then(getWorks(0));
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    });
+
+    modalContent.appendChild(figureModal);
 
     const filterData = data.filter(
       (work) => work.categoryId === Number(categoryId) || categoryId === 0
