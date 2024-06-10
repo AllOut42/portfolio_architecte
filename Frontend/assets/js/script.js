@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const login = document.getElementById("login");
   const logout = document.getElementById("logout");
   const editModale = document.getElementById("editModaleBtn");
+  const filters = document.getElementById("filters");
 
   function CheckToken() {
     if (localStorage.getItem("token")) {
@@ -15,11 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
       login.style.display = "none";
       logout.style.display = "block";
       editModale.style.display = "flex";
+      filters.style.display = "none";
     } else {
       banner.style.display = "none";
       login.style.display = "block";
       logout.style.display = "none";
       editModale.style.display = "none";
+      filters.style.display = "flex";
     }
   }
   CheckToken();
@@ -84,12 +87,17 @@ async function getWorks(categoryId = 0) {
       const figure_modal = document.createElement("figure");
       const img = document.createElement("img");
       const trash = document.createElement("i");
+      const trashContainer = document.createElement("div");
+
       trash.className = "fas fa-trash-alt";
       img.src = imageUrl;
       img.alt = title;
-      img.classList = "toto";
+      img.classList = "imgModal";
+
+      trashContainer.appendChild(trash);
+
       figure_modal.appendChild(img);
-      figure_modal.appendChild(trash);
+      figure_modal.appendChild(trashContainer);
       modalContent.appendChild(figure_modal);
 
       /*figureModal.innerHTML += `
@@ -164,3 +172,32 @@ function setActiveFilter(button) {
     .forEach((b) => b.classList.remove("active"));
   button.classList.add("active");
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const modale = document.getElementById("modale");
+  const editModale = document.getElementById("editModaleBtn");
+  const close = document.getElementById("close");
+
+  editModale.addEventListener("click", function () {
+    modale.style.display = "block";
+  });
+
+  close.addEventListener("click", function () {
+    modale.style.display = "none";
+  });
+
+  window.addEventListener("click", function (event) {
+    if (event.target == modale) {
+      modale.style.display = "none";
+    }
+  });
+});
+
+/*
+const photo = document.querySelector(".file").files[0];
+
+const toto = new FormData();
+toto.append("toto", "tata");
+toto.append("categoryId", "1");
+toto.append("image", photo);
+*/
