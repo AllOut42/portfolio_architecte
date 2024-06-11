@@ -177,9 +177,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const modale = document.getElementById("modale");
   const editModale = document.getElementById("editModaleBtn");
   const close = document.getElementById("close");
+  const addModale = document.getElementById("add-modale");
+  const switchtoadd = document.getElementById("switch-addModale");
+  const closeadd = document.getElementById("close-add");
+
+  switchtoadd.addEventListener("click", function () {
+    modale.style.display = "none";
+    addModale.style.display = "flex";
+  });
 
   editModale.addEventListener("click", function () {
     modale.style.display = "block";
+  });
+
+  closeadd.addEventListener("click", function () {
+    addModale.style.display = "none";
   });
 
   close.addEventListener("click", function () {
@@ -189,6 +201,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("click", function (event) {
     if (event.target == modale) {
       modale.style.display = "none";
+    }
+    if (event.target == addModale) {
+      addModale.style.display = "none";
     }
   });
 });
