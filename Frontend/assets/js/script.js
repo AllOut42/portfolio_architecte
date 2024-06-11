@@ -89,7 +89,7 @@ async function getWorks(categoryId = 0) {
       const trash = document.createElement("i");
       const trashContainer = document.createElement("div");
 
-      trash.className = "fas fa-trash-alt";
+      trash.className = "fas fa-trash-alt fa-sm";
       img.src = imageUrl;
       img.alt = title;
       img.classList = "imgModal";
@@ -180,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const addModale = document.getElementById("add-modale");
   const switchtoadd = document.getElementById("switch-addModale");
   const closeadd = document.getElementById("close-add");
+  const switchModale = document.getElementById("switchToDel");
 
   switchtoadd.addEventListener("click", function () {
     modale.style.display = "none";
@@ -192,6 +193,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   closeadd.addEventListener("click", function () {
     addModale.style.display = "none";
+  });
+
+  switchModale.addEventListener("click", function () {
+    addModale.style.display = "none";
+    modale.style.display = "flex";
   });
 
   close.addEventListener("click", function () {
