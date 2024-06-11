@@ -62,9 +62,39 @@
           </article>
         </section>
         <section id="portfolio">
-          <h2>Mes Projets</h2>
+          <div class="mesProjetsTitre">
+            <h2>Mes Projets</h2>
+            <button id="editModaleBtn">
+              <i class="fa-regular fa-pen-to-square"></i>modifier
+            </button>
+          </div>
           <div id="filters"></div>
           <div class="gallery"></div>
+          <div class="modal" id="modale">
+            <div class="content">
+              <span id="close">x</span>
+              <p>Galerie photo</p>
+              <div class="modalContent"></div>
+              <button id="switch-addModale">Ajouter une photo</button>
+            </div>
+          </div>
+          <div class="modal" id="add-modale">
+            <div class="content">
+              <span id="close-add">x</span>
+              <form class="content-step2">
+                <input type="file" value="250000000" />
+                <input
+                  type="file"
+                  id="my-image"
+                  accept="image/png, image/jpeg, image/gif"
+                />
+                <select>
+                  <option>LALALAL</option>
+                </select>
+                <input type="submit" value="Envoyer" />
+              </form>
+            </div>
+          </div>
         </section>
         <section id="contact">
           <h2>Contact</h2>

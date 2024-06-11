@@ -215,10 +215,6 @@ li:hover {
 #introduction p {
   margin-bottom: 0.5em;
 }
-#portfolio h2 {
-  text-align: center;
-  margin-bottom: 1em;
-}
 .gallery {
   width: 100%;
   display: grid;
@@ -371,8 +367,160 @@ form input[type="submit"] {
   font-size: 16px;
   color: #1d6154;
 }
+.filter-button:hover {
+  background-color: rgb(240, 240, 240, 1);
+}
 
 .active {
   background-color: #1d6154;
   color: white;
+}
+
+.mesProjetsTitre {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2em;
+  gap: 25px;
+}
+
+#editModaleBtn {
+  display: none;
+  background-color: transparent;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-family: "Work Sans";
+  font-size: 14px;
+}
+#editModaleBtn:hover,
+#editModaleBtn:active {
+  color: #b1663c;
+  cursor: pointer;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #fefefe;
+  margin: 4% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 10px;
+  width: 50%;
+  height: auto;
+}
+
+.content p {
+  width: 100%;
+  font-size: 26px;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+#close {
+  align-self: flex-end;
+  font-size: 20px;
+  color: black;
+  float: right;
+  font-weight: bold;
+}
+#close:hover,
+#close:focus {
+  color: #b1663c;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modalContent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  flex-direction: row;
+  gap: 12.4px;
+  background-color: #fefefe;
+  width: 80%;
+  height: 50%;
+  padding-bottom: 60px;
+  border-bottom: solid 1px grey;
+}
+
+.imgModal {
+  height: 100%;
+  object-fit: cover;
+}
+
+.modalContent figure {
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
+  height: 100px;
+}
+
+.modalContent div {
+  display: flex;
+  height: 20px;
+  width: 20px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 68%;
+  top: 5%;
+  background-color: black;
+  border-radius: 15%;
+}
+
+.modalContent figure i:hover {
+  cursor: pointer;
+}
+.modalContent figure i {
+  color: white;
+}
+
+.content button {
+  font-family: "Syne";
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  background-color: #1d6154;
+  margin-top: 34px;
+  height: 50px;
+  width: 300px;
+  text-align: center;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+}
+
+.content button:active {
+  background-color: rgba(14, 47, 40, 1);
+}
+
+#close-add {
+  align-self: flex-end;
+  font-size: 20px;
+  color: black;
+  float: right;
+  font-weight: bold;
+}
+#close-add:hover,
+#close-add:focus {
+  color: #b1663c;
+  text-decoration: none;
+  cursor: pointer;
 }
