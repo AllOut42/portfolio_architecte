@@ -110,15 +110,12 @@ async function getWorks(categoryId = 0) {
         e.preventDefault();
         console.log("delete", id);
         try {
-          const response = await fetch(
-            `http://localhost:5678/api/works/${id}`,
-            {
-              method: "DELETE",
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
-          ).then(getWorks(0));
+          await fetch(`http://localhost:5678/api/works/${id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }).then(getWorks(0));
         } catch (error) {
           console.error(error);
         }
@@ -222,3 +219,42 @@ toto.append("toto", "tata");
 toto.append("categoryId", "1");
 toto.append("image", photo);
 */
+
+/* Faire la preview de l'image + verification taille */
+
+document.addEventListener("DOMContentLoaded", function () {
+  const uploadFile = document.getElementById("fileInput");
+  const maxSize = 4 * 1024 * 1024; // 4 Mo en octets
+
+  uploadFile.addEventListener("change", function (event) {
+    const fileInput = event.target;
+    const previewContainer = document.getElementById("previewContainer");
+    const imagePreview = document.getElementById("imagePreview");
+    const basePreview = document.getElementById("basePreview");
+    const file = fileInput.files[0];
+
+    if (file) {
+      if (file.size > maxSize) {
+        alert("Le fichier est trop grand. La taille maximale est de 4 Mo.");
+        fileInput.value = ""; // Reinitialise l'input file
+        imagePreview.src = "";
+        previewContainer.classList.add("hidden");
+        return; // exit
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        //onload : en attente de la lecture complete et terminer sans probleme
+        imagePreview.src = e.target.result; // mise en place de la source pour afficher
+        basePreview.classList.add("hidden");
+        previewContainer.classList.remove("hidden");
+        previewContainer.style.display("flex");
+      };
+      reader.readAsDataURL(file); // conversion de l'image sous forme de data url (locale)
+    } else {
+      imagePreview.src = "";
+      previewContainer.classList.add("hidden");
+      basePreview.classList.remove("hidden");
+    }
+  });
+});

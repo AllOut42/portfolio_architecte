@@ -87,12 +87,22 @@
                 <span id="close-add"><i class="fa-solid fa-xmark"></i></span>
               </div>
               <form class="content-step2">
-                <input type="file" value="250000000" />
-                <input
-                  type="file"
-                  id="my-image"
-                  accept="image/png, image/jpeg, image/gif"
-                />
+                <p>Ajout photo</p>
+                <div class="box-addPicture">
+                  <span id="basePreview"
+                    ><i class="fa-regular fa-image fa-4x"></i
+                  ></span>
+                  <div id="previewContainer" class="hidden">
+                    <img id="imagePreview" src="" alt="Image Preview" />
+                  </div>
+                  <div class="file-upload">
+                    <label for="fileInput" class="file-label"
+                      >+ Ajouter photo</label
+                    >
+                    <input type="file" id="fileInput" accept=".png, .jpeg" />
+                    <p>jpg, png : 4mo max</p>
+                  </div>
+                </div>
                 <select>
                   <option>LALALAL</option>
                 </select>
