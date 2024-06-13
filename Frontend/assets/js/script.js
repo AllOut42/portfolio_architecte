@@ -128,7 +128,7 @@ async function getWorks(categoryId = 0) {
       (work) => work.categoryId === Number(categoryId) || categoryId === 0
     );
 
-    const figures = filterData.map(({ id, imageUrl, title }) => {
+    const figures = filterData.map(({ imageUrl, title }) => {
       const figure = document.createElement("figure");
       figure.innerHTML += `
       <img src="${imageUrl}" alt="${title}" />
@@ -224,37 +224,141 @@ toto.append("image", photo);
 
 document.addEventListener("DOMContentLoaded", function () {
   const uploadFile = document.getElementById("fileInput");
+  const fileupload = document.getElementById("file-upload");
+  const basePreview = document.getElementById("basePreview");
   const maxSize = 4 * 1024 * 1024; // 4 Mo en octets
 
   uploadFile.addEventListener("change", function (event) {
     const fileInput = event.target;
     const previewContainer = document.getElementById("previewContainer");
     const imagePreview = document.getElementById("imagePreview");
-    const basePreview = document.getElementById("basePreview");
     const file = fileInput.files[0];
 
     if (file) {
       if (file.size > maxSize) {
         alert("Le fichier est trop grand. La taille maximale est de 4 Mo.");
-        fileInput.value = ""; // Reinitialise l'input file
+        fileInput.value = ""; // Réinitialise l'input file
         imagePreview.src = "";
         previewContainer.classList.add("hidden");
-        return; // exit
+        return; // Exit
       }
 
       const reader = new FileReader();
       reader.onload = function (e) {
-        //onload : en attente de la lecture complete et terminer sans probleme
-        imagePreview.src = e.target.result; // mise en place de la source pour afficher
+        // Définition de la fonction onload
+        imagePreview.src = e.target.result;
+        fileupload.style.display = "none";
+        basePreview.classList.remove("flex");
         basePreview.classList.add("hidden");
         previewContainer.classList.remove("hidden");
-        previewContainer.style.display("flex");
+        previewContainer.style.display = "flex";
       };
-      reader.readAsDataURL(file); // conversion de l'image sous forme de data url (locale)
+      reader.readAsDataURL(file);
     } else {
       imagePreview.src = "";
+      fileupload.style.display = "flex";
+      basePreview.classList.remove("flex");
+      basePreview.classList.add("hidden");
       previewContainer.classList.add("hidden");
-      basePreview.classList.remove("hidden");
+    }
+  });
+});
+///////////////////////////////////////////////////////////////////
+//                             EN                                //
+//                            TEST                               //
+///////////////////////////////////////////////////////////////////
+// Envoie de l'image au serveur et ajout de la figure à la galerie
+document.addEventListener("DOMContentLoaded", function () {
+  const uploadButton = document.getElementById("uploadButton");
+  const uploadFile = document.getElementById("imagePreview");
+  const titleInput = document.getElementById("titleInput");
+  const categorySelect = document.getElementById("categorySelect");
+
+  uploadButton.addEventListener("click", async function (e) {
+    e.preventDefault();
+    const file = uploadFile.src;
+    const title = titleInput.value;
+    const categoryId = categorySelect.value;
+
+    if (!file) {
+      alert("Veuillez choisir un fichier à télécharger.");
+      return;
+    }
+
+    if (!title) {
+      alert("Veuillez entrer un titre.");
+      return;
+    }
+
+    if (!categoryId) {
+      alert("Veuillez sélectionner une catégorie.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("imageUrl", file);
+    formData.append("title", title);
+    formData.append("categoryId", categoryId);
+
+    console.log("Uploading file with the following data:", {
+      file,
+      title,
+      categoryId,
+    });
+
+    try {
+      await fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Response from server:", data);
+
+          // Supposons que si l'objet `data` est valide, la création a été réussie.
+          if (data && data.id && data.imageUrl && data.title) {
+            alert("Fichier téléchargé avec succès.");
+
+            // Ajout de la nouvelle figure dans la galerie
+            const gallery = document.querySelector(".gallery");
+            const figure = document.createElement("figure");
+            figure.innerHTML = `
+            <img src="${data.imageUrl}" alt="${title}" />
+            <figcaption>${title}</figcaption>
+          `;
+            gallery.appendChild(figure);
+
+            // Réinitialiser le formulaire
+            uploadFile.src = "";
+            titleInput.value = "";
+            categorySelect.selectedIndex = 0;
+
+            // Masquer la preview
+            const previewContainer =
+              document.getElementById("previewContainer");
+            const imagePreview = document.getElementById("imagePreview");
+            const fileupload = document.getElementById("file-upload");
+            const basePreview = document.getElementById("basePreview");
+            imagePreview.src = "";
+            previewContainer.classList.add("hidden");
+            fileupload.style.display = "flex";
+            basePreview.classList.add("flex");
+            basePreview.classList.remove("hidden");
+          } else {
+            alert("Échec du téléchargement du fichier.");
+          }
+        });
+    } catch (error) {
+      console.error("Erreur:", error);
+      alert("Erreur lors du téléchargement du fichier.");
     }
   });
 });
