@@ -317,7 +317,6 @@ document.addEventListener("DOMContentLoaded", () => {
         getWorks(0);
         document.getElementById("add-modale").style.display = "none";
         window.scrollTo({ top: 0, behavior: "smooth" });
-        alert("pause");
       }
     } catch (error) {
       console.error("Error adding work:", error);
