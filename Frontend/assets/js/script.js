@@ -1,17 +1,7 @@
-// 1 : Récupérer les filtres depuis l'API
-// 2 : Créer les boutons dans le DOM
-// 3 : Au clic sur un bouton trier les catégories
-let worksData;
-
-window.onload = () => {
-  fetch("http://localhost:5678/api/works")
-    .then((response) => response.json())
-    .then((data) => {
-      worksData = data;
-      console.log(worksData);
-    });
-};
-
+/**
+ * Écouteur d'événements pour l'événement DOMContentLoaded.
+ * Gère l'affichage et la fonctionnalité des boutons de connexion/déconnexion et des modales.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token");
   const banner = document.getElementById("banner");
@@ -20,6 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const editModale = document.getElementById("editModaleBtn");
   const filters = document.getElementById("filters");
 
+  /**
+   * Vérifie si un jeton est présent dans le stockage local et met à jour l'affichage des boutons de connexion/déconnexion et des modales.
+   */
   function CheckToken() {
     if (localStorage.getItem("token")) {
       banner.style.display = "flex";
@@ -45,6 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+/**
+ * Récupère la liste des filtres à partir du serveur et les affiche.
+ */
 async function getFilters() {
   const response = await fetch("http://localhost:5678/api/categories");
   const data = await response.json();
@@ -68,7 +64,35 @@ async function getFilters() {
     }
   });
 }
+getFilters();
 
+/**
+ * Crée un bouton de filtre avec un texte et une valeur spécifiques.
+ * @param {string} value - La valeur du bouton de filtre.
+ * @param {string} text - Le texte affiché sur le bouton de filtre.
+ * @returns {HTMLButtonElement} - Le bouton de filtre créé.
+ */
+function createFilterButton(value, text) {
+  const button = document.createElement("button");
+  button.className = "filter-option";
+  button.textContent = text;
+  button.value = value;
+  return button;
+}
+
+/**
+ * Écouteur d'événements pour l'événement DOMContentLoaded.
+ * Récupère la liste des travaux et les affiche dans la galerie.
+ */
+document.addEventListener("DOMContentLoaded", () => {
+  getWorks(0).then(() => console.log("Travaux chargés"));
+});
+
+/**
+ * Récupère la liste des travaux à partir du serveur et les affiche dans la galerie.
+ * @param {number} categoryId - L'ID de la catégorie pour filtrer les travaux.
+ * @returns {Promise<void>}
+ */
 async function getWorks(categoryId = 0) {
   try {
     const response = await fetch("http://localhost:5678/api/works");
@@ -78,19 +102,6 @@ async function getWorks(categoryId = 0) {
     const modalContent = document.querySelector(".modalContent");
     gallery.innerHTML = "";
     modalContent.innerHTML = "";
-
-    // 1 : Je récupérer les élements depuis l'api
-    // 2 : Afficher les éléments dans le DOM (Modal)
-    // 3 : Afficher une poubelle sur chaque élément (Modal)
-    // 4 : Au clic sur la poubelle supprimer l'élément depuis l'api
-    // 5 : On recharge GETWorks()
-    // 6 : STEP 2 de la modale (AJOUT)
-    // 7 : Ajouter un bouton ajouter un work
-    // 8 : Récupérer l'image, le titre et la catégorie
-    // 8a : La catégorie doit être un select qui récupère les catégories depuis l'api
-    // 9 : Si toutes les données sont saisie correctement on post SUR l'api
-    // 9 a: En cas d'erreur on bloque et msg d'erreur.
-    // 10 : On recharge GETWorks() pour afficher les nouveaux résultats.
 
     const figureModal = document.createElement("figure");
     data.forEach(({ id, imageUrl, title }) => {
@@ -110,22 +121,16 @@ async function getWorks(categoryId = 0) {
       figure_modal.appendChild(trashContainer);
       modalContent.appendChild(figure_modal);
 
-      /*figureModal.innerHTML += `
-      <img src="${imageUrl}" alt="${title}" class="toto"/>
-      <i class="fas fa-trash-alt"></i>
-      `;
-      */
-
       trash.addEventListener("click", async function (e) {
         e.preventDefault();
-        console.log("delete", id);
         try {
           await fetch(`http://localhost:5678/api/works/${id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }).then(getWorks(0));
+          });
+          getWorks(categoryId);
         } catch (error) {
           console.error(error);
         }
@@ -141,8 +146,8 @@ async function getWorks(categoryId = 0) {
     const figures = filterData.map(({ imageUrl, title }) => {
       const figure = document.createElement("figure");
       figure.innerHTML += `
-      <img src="${imageUrl}" alt="${title}" />
-      <figcaption>${title}</figcaption>
+        <img src="${imageUrl}" alt="${title}" />
+        <figcaption>${title}</figcaption>
       `;
       return figure;
     });
@@ -153,26 +158,10 @@ async function getWorks(categoryId = 0) {
   }
 }
 
-function createFilterButton(value, text) {
-  const button = document.createElement("button");
-  button.className = "filter-option";
-  button.textContent = text;
-  button.value = value;
-  return button;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  getFilters().then(() => {
-    const allButton = document.querySelector('.filter-option[value="0"]');
-
-    if (allButton) {
-      allButton.classList.add("active");
-    }
-
-    getWorks(0).then(() => console.log("works loaded"));
-  });
-});
-
+/**
+ * Met le bouton de filtre actif.
+ * @param {HTMLButtonElement} button - Le bouton de filtre à mettre actif.
+ */
 function setActiveFilter(button) {
   document
     .querySelectorAll(".filter-option")
@@ -180,6 +169,10 @@ function setActiveFilter(button) {
   button.classList.add("active");
 }
 
+/**
+ * Écouteur d'événements pour l'événement DOMContentLoaded.
+ * Gère l'affichage et la fonctionnalité des modales d'édition et d'ajout.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   const modale = document.getElementById("modale");
   const editModale = document.getElementById("editModaleBtn");
@@ -212,26 +205,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   window.addEventListener("click", function (event) {
-    if (event.target == modale) {
+    if (event.target === modale || event.target === addModale) {
       modale.style.display = "none";
-    }
-    if (event.target == addModale) {
       addModale.style.display = "none";
     }
   });
 });
 
-/*
-const photo = document.querySelector(".file").files[0];
-
-const toto = new FormData();
-toto.append("toto", "tata");
-toto.append("categoryId", "1");
-toto.append("image", photo);
-*/
-
-/* Faire la preview de l'image + verification taille */
-
+/**
+ * Fait la prévisualisation de l'image et vérifie sa taille.
+ */
 document.addEventListener("DOMContentLoaded", function () {
   const uploadFile = document.getElementById("fileInput");
   const fileupload = document.getElementById("file-upload");
@@ -243,20 +226,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const previewContainer = document.getElementById("previewContainer");
     const imagePreview = document.getElementById("imagePreview");
     const file = fileInput.files[0];
-    console.log(file);
 
     if (file) {
       if (file.size > maxSize) {
-        alert("Le fichier est trop grand. La taille maximale est de 4 Mo.");
-        fileInput.value = ""; // Réinitialise l'input file
+        alert(
+          "Le fichier est trop volumineux. La taille maximale est de 4 Mo."
+        );
+        fileInput.value = ""; // Réinitialise l'input de fichier
         imagePreview.src = "";
         previewContainer.classList.add("hidden");
-        return; // Exit
+        return;
       }
 
       const reader = new FileReader();
       reader.onload = function (e) {
-        // Définition de la fonction onload
         imagePreview.src = e.target.result;
         fileupload.style.display = "none";
         basePreview.classList.remove("flex");
@@ -275,11 +258,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-///////////////////////////////////////////////////////////////////
-//                             EN                                //
-//                            TEST                               //
-///////////////////////////////////////////////////////////////////
-// Envoie de l'image au serveur et ajout de la figure à la galerie
+/**
+ * Envoie l'image au serveur et ajoute la figure à la galerie.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   const uploadForm = document.getElementById("uploadForm");
 
@@ -300,10 +281,6 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("title", titleInput);
     formData.append("category", categorySelect);
 
-    for (let i of formData.entries()) {
-      console.log(i[0] + ": " + i[1]);
-    }
-
     try {
       const response = await fetch("http://localhost:5678/api/works", {
         method: "POST",
@@ -314,12 +291,11 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (response.ok) {
-        getWorks(0);
-        document.getElementById("add-modale").style.display = "none";
+        getWorks(categorySelect);
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } catch (error) {
-      console.error("Error adding work:", error);
+      console.error("Erreur lors de l'ajout du travail :", error);
       alert("Erreur lors de l'ajout du travail. Veuillez réessayer.");
     }
   });
