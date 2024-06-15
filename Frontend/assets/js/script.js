@@ -1,6 +1,16 @@
 // 1 : Récupérer les filtres depuis l'API
 // 2 : Créer les boutons dans le DOM
 // 3 : Au clic sur un bouton trier les catégories
+let worksData;
+
+window.onload = () => {
+  fetch("http://localhost:5678/api/works")
+    .then((response) => response.json())
+    .then((data) => {
+      worksData = data;
+      console.log(worksData);
+    });
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token");
@@ -233,6 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const previewContainer = document.getElementById("previewContainer");
     const imagePreview = document.getElementById("imagePreview");
     const file = fileInput.files[0];
+    console.log(file);
 
     if (file) {
       if (file.size > maxSize) {
@@ -263,102 +274,54 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
 ///////////////////////////////////////////////////////////////////
 //                             EN                                //
 //                            TEST                               //
 ///////////////////////////////////////////////////////////////////
 // Envoie de l'image au serveur et ajout de la figure à la galerie
-document.addEventListener("DOMContentLoaded", function () {
-  const uploadButton = document.getElementById("uploadButton");
-  const uploadFile = document.getElementById("imagePreview");
-  const titleInput = document.getElementById("titleInput");
-  const categorySelect = document.getElementById("categorySelect");
+document.addEventListener("DOMContentLoaded", () => {
+  const uploadForm = document.getElementById("uploadForm");
 
-  uploadButton.addEventListener("click", async function (e) {
+  uploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const file = uploadFile.src;
-    const title = titleInput.value;
-    const categoryId = categorySelect.value;
 
-    if (!file) {
-      alert("Veuillez choisir un fichier à télécharger.");
-      return;
-    }
+    const image = document.getElementById("fileInput").files[0];
+    const titleInput = document.getElementById("titleInput").value;
+    const categorySelect = document.getElementById("categorySelect").value;
 
-    if (!title) {
-      alert("Veuillez entrer un titre.");
-      return;
-    }
-
-    if (!categoryId) {
-      alert("Veuillez sélectionner une catégorie.");
+    if (!image || !titleInput || !categorySelect) {
+      alert("Veuillez remplir tous les champs.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("imageUrl", file);
-    formData.append("title", title);
-    formData.append("categoryId", categoryId);
+    formData.append("image", image);
+    formData.append("title", titleInput);
+    formData.append("category", categorySelect);
 
-    console.log("Uploading file with the following data:", {
-      file,
-      title,
-      categoryId,
-    });
+    for (let i of formData.entries()) {
+      console.log(i[0] + ": " + i[1]);
+    }
 
     try {
-      await fetch("http://localhost:5678/api/works", {
+      const response = await fetch("http://localhost:5678/api/works", {
         method: "POST",
-        body: formData,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Response from server:", data);
+        body: formData,
+      });
 
-          // Supposons que si l'objet `data` est valide, la création a été réussie.
-          if (data && data.id && data.imageUrl && data.title) {
-            alert("Fichier téléchargé avec succès.");
-
-            // Ajout de la nouvelle figure dans la galerie
-            const gallery = document.querySelector(".gallery");
-            const figure = document.createElement("figure");
-            figure.innerHTML = `
-            <img src="${data.imageUrl}" alt="${title}" />
-            <figcaption>${title}</figcaption>
-          `;
-            gallery.appendChild(figure);
-
-            // Réinitialiser le formulaire
-            uploadFile.src = "";
-            titleInput.value = "";
-            categorySelect.selectedIndex = 0;
-
-            // Masquer la preview
-            const previewContainer =
-              document.getElementById("previewContainer");
-            const imagePreview = document.getElementById("imagePreview");
-            const fileupload = document.getElementById("file-upload");
-            const basePreview = document.getElementById("basePreview");
-            imagePreview.src = "";
-            previewContainer.classList.add("hidden");
-            fileupload.style.display = "flex";
-            basePreview.classList.add("flex");
-            basePreview.classList.remove("hidden");
-          } else {
-            alert("Échec du téléchargement du fichier.");
-          }
-        });
+      if (response.ok) {
+        getWorks(0);
+        document.getElementById("add-modale").style.display = "none";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        alert("pause");
+      }
     } catch (error) {
-      console.error("Erreur:", error);
-      alert("Erreur lors du téléchargement du fichier.");
+      console.error("Error adding work:", error);
+      alert("Erreur lors de l'ajout du travail. Veuillez réessayer.");
     }
   });
 });

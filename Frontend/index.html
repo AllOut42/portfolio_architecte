@@ -86,12 +86,12 @@
                 ></span>
                 <span id="close-add"><i class="fa-solid fa-xmark"></i></span>
               </div>
-              <form class="content-step2">
+              <form id="uploadForm" class="content-step2">
                 <p id="titre-Modale2">Ajout photo</p>
                 <div class="box-addPicture">
-                  <span id="basePreview" class="flex"
-                    ><i class="fa-regular fa-image fa-5x"></i
-                  ></span>
+                  <span id="basePreview" class="flex">
+                    <i class="fa-regular fa-image fa-5x"></i>
+                  </span>
                   <div id="previewContainer" class="hidden">
                     <img id="imagePreview" src="" alt="Image Preview" />
                   </div>
@@ -99,15 +99,20 @@
                     <label for="fileInput" class="file-label"
                       >+ Ajouter photo</label
                     >
-                    <input type="file" id="fileInput" accept=".png, .jpeg" />
+                    <input
+                      type="file"
+                      id="fileInput"
+                      accept="image/png, image/jpeg"
+                    />
                     <p>jpg, png : 4mo max</p>
                   </div>
                 </div>
-                <input type="text" id="titleInput" />
+                <input type="text" id="titleInput" placeholder="Titre" />
                 <select id="categorySelect">
-                  <option>Objets</option>
-                  <option>Appartements</option>
-                  <option>Hotels & Restaurants</option>
+                  <option>Veuillez selectionner une option</option>
+                  <option value="1">Objets</option>
+                  <option value="2">Appartements</option>
+                  <option value="3">Hotels & Appartements</option>
                 </select>
                 <input type="submit" value="Envoyer" id="uploadButton" />
               </form>
