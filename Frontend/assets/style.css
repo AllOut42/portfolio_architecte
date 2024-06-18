@@ -399,7 +399,7 @@ form input[type="submit"] {
 .mesProjetsTitre {
   display: flex;
   justify-content: center;
-  margin-bottom: 2em;
+  margin: 6em;
   gap: 25px;
 }
 
@@ -497,9 +497,9 @@ form input[type="submit"] {
   flex-direction: row;
   gap: 12.4px;
   background-color: #fefefe;
-  width: 71%;
-  height: auto;
-  padding-bottom: 60px;
+  width: 70%;
+  height: fit-content;
+  padding-bottom: 50px;
   border-bottom: solid 1px grey;
 }
 

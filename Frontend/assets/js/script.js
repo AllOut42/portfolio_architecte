@@ -179,6 +179,23 @@ function setActiveFilter(button) {
  * Gère l'affichage et la fonctionnalité des modales d'édition et d'ajout.
  */
 document.addEventListener("DOMContentLoaded", () => {
+  function resetModale() {
+    const fileupload = document.getElementById("file-upload");
+    const basePreview = document.getElementById("basePreview");
+    const previewContainer = document.getElementById("previewContainer");
+    const imagePreview = document.getElementById("imagePreview");
+    const uploadForm = document.getElementById("uploadForm");
+
+    uploadForm.reset();
+    imagePreview.src = "";
+    imagePreview.innerHTML = "";
+    fileupload.style.display = "flex";
+    basePreview.classList.remove("hidden");
+    basePreview.classList.add("flex");
+    previewContainer.classList.remove("flex");
+    previewContainer.classList.add("hidden");
+  }
+
   const modale = document.getElementById("modale");
   const editModale = document.getElementById("editModaleBtn");
   const close = document.getElementById("close");
@@ -186,10 +203,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const switchtoadd = document.getElementById("switch-addModale");
   const closeadd = document.getElementById("close-add");
   const switchModale = document.getElementById("switchToDel");
+  const uploadForm = document.getElementById("uploadForm");
 
   switchtoadd.addEventListener("click", function () {
     modale.style.display = "none";
     addModale.style.display = "flex";
+    resetModale();
   });
 
   editModale.addEventListener("click", function () {
@@ -198,29 +217,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   closeadd.addEventListener("click", function () {
     addModale.style.display = "none";
+    resetModale();
   });
 
   switchModale.addEventListener("click", function () {
     addModale.style.display = "none";
     modale.style.display = "flex";
+    resetModale();
   });
 
   close.addEventListener("click", function () {
     modale.style.display = "none";
+    resetModale();
   });
 
   window.addEventListener("click", function (event) {
     if (event.target === modale || event.target === addModale) {
       modale.style.display = "none";
       addModale.style.display = "none";
+      resetModale();
     }
   });
-});
 
-/**
- * Fait la prévisualisation de l'image et vérifie sa taille.
- */
-document.addEventListener("DOMContentLoaded", function () {
+  /**
+   * Fait la prévisualisation de l'image et vérifie sa taille.
+   */
+
   const uploadFile = document.getElementById("fileInput");
   const fileupload = document.getElementById("file-upload");
   const basePreview = document.getElementById("basePreview");
@@ -250,24 +272,17 @@ document.addEventListener("DOMContentLoaded", function () {
         basePreview.classList.remove("flex");
         basePreview.classList.add("hidden");
         previewContainer.classList.remove("hidden");
-        previewContainer.style.display = "flex";
+        previewContainer.classList.add("flex");
       };
       reader.readAsDataURL(file);
     } else {
-      imagePreview.src = "";
-      fileupload.style.display = "flex";
-      basePreview.classList.remove("flex");
-      basePreview.classList.add("hidden");
-      previewContainer.classList.add("hidden");
+      resetModale();
     }
   });
-});
 
-/**
- * Envoie l'image au serveur et ajoute la figure à la galerie.
- */
-document.addEventListener("DOMContentLoaded", () => {
-  const uploadForm = document.getElementById("uploadForm");
+  /**
+   * Envoie l'image au serveur et ajoute la figure à la galerie.
+   */
 
   uploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -298,6 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         getWorks(categorySelect);
         window.scrollTo({ top: 0, behavior: "smooth" });
+        resetModale();
       }
     } catch (error) {
       console.error("Erreur lors de l'ajout du travail :", error);
@@ -330,32 +346,4 @@ document.addEventListener("DOMContentLoaded", () => {
   getCategories();
 });
 
-/***Changement couleur bouton lorsque tout est remplie********** */
-
-const form = document.getElementById("uploadForm");
-const textInput = form.querySelector('input[type="text"]');
-const selectInput = form.querySelector("select");
-
-function checkFormCompletion() {
-  const isTextFilled = textInput.value.trim() !== "";
-  const isSelectFilled = selectInput.value !== 0;
-
-  const allFilled = isTextFilled && isSelectFilled;
-
-  const inputs = [fileInput, textInput, selectInput];
-
-  inputs.forEach((input) => {
-    if (allFilled) {
-      input.classList.add("complete");
-      input.classList.remove("incomplete");
-    } else {
-      input.classList.add("incomplete");
-      input.classList.remove("complete");
-    }
-  });
-}
-
-textInput.addEventListener("input", checkFormCompletion);
-selectInput.addEventListener("change", checkFormCompletion);
-
-window.addEventListener("load", checkFormCompletion);
+/*********Bouton Valider Image Dynamique */
