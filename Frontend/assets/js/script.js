@@ -34,56 +34,61 @@ document.addEventListener("DOMContentLoaded", () => {
     if (token) {
       localStorage.removeItem("token");
       CheckToken();
+      getFilters();
     }
   });
+
+  /**Fgetfilters
+   * Récupère la liste des filtres à partir du serveur et les affiche.
+   */
+  async function getFilters() {
+    const response = await fetch("http://localhost:5678/api/categories");
+    const data = await response.json();
+
+    const filters = document.getElementById("filters");
+    const allButton = createFilterButton("0", "Tous");
+    allButton.classList.add("filter-button");
+    allButton.classList.add("active");
+    filters.appendChild(allButton);
+
+    data.forEach((item) => {
+      const button = createFilterButton(item.id, item.name);
+      button.classList.add("filter-button");
+      filters.appendChild(button);
+    });
+
+    filters.addEventListener("click", (event) => {
+      if (event.target.tagName === "BUTTON") {
+        const categoryId = Number(event.target.value);
+        getWorks(categoryId);
+        setActiveFilter(event.target);
+      }
+    });
+  }
+
+  if (!localStorage.getItem("token")) {
+    getFilters();
+  }
+
+  /**
+   * Crée un bouton de filtre avec un texte et une valeur spécifiques.
+   * @param {string} value - La valeur du bouton de filtre.
+   * @param {string} text - Le texte affiché sur le bouton de filtre.
+   * @returns {HTMLButtonElement} - Le bouton de filtre créé.
+   */
+  function createFilterButton(value, text) {
+    const button = document.createElement("button");
+    button.className = "filter-option";
+    button.textContent = text;
+    button.value = value;
+    return button;
+  }
 });
-
-/**
- * Récupère la liste des filtres à partir du serveur et les affiche.
- */
-async function getFilters() {
-  const response = await fetch("http://localhost:5678/api/categories");
-  const data = await response.json();
-
-  const filters = document.getElementById("filters");
-  const allButton = createFilterButton("0", "Tous");
-  allButton.classList.add("filter-button");
-  filters.appendChild(allButton);
-
-  data.forEach((item) => {
-    const button = createFilterButton(item.id, item.name);
-    button.classList.add("filter-button");
-    filters.appendChild(button);
-  });
-
-  filters.addEventListener("click", (event) => {
-    if (event.target.tagName === "BUTTON") {
-      const categoryId = Number(event.target.value);
-      getWorks(categoryId);
-      setActiveFilter(event.target);
-    }
-  });
-}
-getFilters();
-
-/**
- * Crée un bouton de filtre avec un texte et une valeur spécifiques.
- * @param {string} value - La valeur du bouton de filtre.
- * @param {string} text - Le texte affiché sur le bouton de filtre.
- * @returns {HTMLButtonElement} - Le bouton de filtre créé.
- */
-function createFilterButton(value, text) {
-  const button = document.createElement("button");
-  button.className = "filter-option";
-  button.textContent = text;
-  button.value = value;
-  return button;
-}
-
 /**
  * Écouteur d'événements pour l'événement DOMContentLoaded.
  * Récupère la liste des travaux et les affiche dans la galerie.
  */
+
 document.addEventListener("DOMContentLoaded", () => {
   getWorks(0).then(() => console.log("Travaux chargés"));
 });
@@ -271,7 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const titleInput = document.getElementById("titleInput").value;
     const categorySelect = document.getElementById("categorySelect").value;
 
-    if (!image || !titleInput || !categorySelect) {
+    if (!image || !titleInput || !categorySelect || categorySelect == 0) {
       alert("Veuillez remplir tous les champs.");
       return;
     }
@@ -300,3 +305,57 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+/***********Add Image - LoadCategorie Dynamique *********/
+document.addEventListener("DOMContentLoaded", () => {
+  function createSelectOption(value, text) {
+    const option = document.createElement("option");
+    option.textContent = text;
+    option.value = value;
+    return option;
+  }
+
+  async function getCategories() {
+    const response = await fetch("http://localhost:5678/api/categories");
+    const data = await response.json();
+    const select = document.getElementById("categorySelect");
+    const optionnull = document.createElement("option");
+    optionnull.value = 0;
+    select.appendChild(optionnull);
+
+    data.forEach((item) => {
+      const option = createSelectOption(item.id, item.name);
+      select.appendChild(option);
+    });
+  }
+  getCategories();
+});
+
+/***Changement couleur bouton lorsque tout est remplie********** */
+
+const form = document.getElementById("uploadForm");
+const textInput = form.querySelector('input[type="text"]');
+const selectInput = form.querySelector("select");
+
+function checkFormCompletion() {
+  const isTextFilled = textInput.value.trim() !== "";
+  const isSelectFilled = selectInput.value !== 0;
+
+  const allFilled = isTextFilled && isSelectFilled;
+
+  const inputs = [fileInput, textInput, selectInput];
+
+  inputs.forEach((input) => {
+    if (allFilled) {
+      input.classList.add("complete");
+      input.classList.remove("incomplete");
+    } else {
+      input.classList.add("incomplete");
+      input.classList.remove("complete");
+    }
+  });
+}
+
+textInput.addEventListener("input", checkFormCompletion);
+selectInput.addEventListener("change", checkFormCompletion);
+
+window.addEventListener("load", checkFormCompletion);

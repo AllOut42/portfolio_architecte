@@ -79,7 +79,7 @@
             </div>
           </div>
           <div class="modal" id="add-modale">
-            <div class="content">
+            <div class="content-add">
               <div id="headModaleAdd">
                 <span id="switchToDel"
                   ><i class="fa-solid fa-arrow-left fa-lg"></i
@@ -107,14 +107,12 @@
                     <p>jpg, png : 4mo max</p>
                   </div>
                 </div>
-                <input type="text" id="titleInput" placeholder="Titre" />
-                <select id="categorySelect">
-                  <option value="0">Veuillez selectionner une option</option>
-                  <option value="1">Objets</option>
-                  <option value="2">Appartements</option>
-                  <option value="3">Hotels & Appartements</option>
-                </select>
-                <input type="submit" value="Envoyer" id="uploadButton" />
+                <label for="titleInput" class="labelTitle">Titre</label>
+                <input type="text" id="titleInput" />
+                <label for="categorySelect" class="labelTitle">Catégorie</label>
+                <select id="categorySelect"></select>
+                <div id="blank"></div>
+                <input type="submit" value="Valider" id="uploadButton" />
               </form>
             </div>
           </div>

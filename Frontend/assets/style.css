@@ -275,7 +275,20 @@ form a {
 }
 
 form input[type="text"] {
-  margin-bottom: 20px;
+  margin: 10px 0;
+  width: 100%;
+  border: none;
+  box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+  height: 35px;
+  appearance: none;
+}
+
+#categorySelect {
+  margin: 10px 0;
+  width: 100%;
+  border: none;
+  box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+  height: 35px;
 }
 
 .login-case {
@@ -298,7 +311,7 @@ form input[type="text"] {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"] {
+.login-case input[type="submit"] {
   font-family: "Syne";
   font-weight: 700;
   color: white;
@@ -379,6 +392,10 @@ form input[type="submit"] {
   color: white;
 }
 
+.active:hover {
+  background-color: #1d615499;
+}
+
 .mesProjetsTitre {
   display: flex;
   justify-content: center;
@@ -413,6 +430,7 @@ form input[type="submit"] {
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
 }
+
 .content {
   display: flex;
   align-items: center;
@@ -423,7 +441,20 @@ form input[type="submit"] {
   border: 1px solid #888;
   border-radius: 10px;
   width: 40%;
-  height: auto;
+  height: fit-content;
+}
+
+.content-add {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #fefefe;
+  margin: 4% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 10px;
+  width: 40%;
+  height: fit-content;
 }
 
 #modale .content p {
@@ -474,6 +505,7 @@ form input[type="submit"] {
 
 .imgModal {
   height: 100%;
+  width: 60px;
   object-fit: cover;
 }
 
@@ -510,7 +542,7 @@ form input[type="submit"] {
   font-size: 14px;
   color: white;
   background-color: #1d6154;
-  margin-top: 34px;
+  margin-top: 20px;
   height: 50px;
   width: 300px;
   text-align: center;
@@ -546,19 +578,46 @@ form input[type="submit"] {
 
 /* section add image */
 
+.content-step2 input[type="submit"] {
+  font-family: "Syne";
+  font-weight: 700;
+  margin: 30px 0 0;
+  color: white;
+  background-color: #1d6154;
+  width: 60%;
+  text-align: center;
+  border-radius: 60px;
+  cursor: pointer;
+  border: none;
+}
+
+.labelTitle {
+  font: "Work Sans";
+  font-weight: 500;
+  font-size: 14px;
+  align-self: flex-start;
+  margin-top: 10px;
+}
+
+#blank {
+  height: 20px;
+  width: 100%;
+  border-bottom: solid 1px rgba(179, 179, 179, 1);
+}
+
 .content-step2 {
   display: flex;
+  align-items: center;
   flex-direction: column;
   margin: 0;
   width: 80%;
-  height: auto;
 }
 .box-addPicture {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 15px 0;
-  height: 40%;
+
   width: 100%;
   background-color: rgba(232, 241, 246, 1);
 }
@@ -626,7 +685,7 @@ input[type="file"] {
 
 #imagePreview {
   width: auto;
-  height: 100%;
+  height: 200px;
   max-width: 100%;
   max-height: 100%;
 }
