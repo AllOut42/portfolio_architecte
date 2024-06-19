@@ -209,6 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modale.style.display = "none";
     addModale.style.display = "flex";
     resetModale();
+    checkfilled();
   });
 
   editModale.addEventListener("click", function () {
@@ -320,9 +321,9 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Erreur lors de l'ajout du travail. Veuillez réessayer.");
     }
   });
-});
-/***********Add Image - LoadCategorie Dynamique *********/
-document.addEventListener("DOMContentLoaded", () => {
+
+  /***********Add Image - LoadCategorie Dynamique *********/
+
   function createSelectOption(value, text) {
     const option = document.createElement("option");
     option.textContent = text;
@@ -344,6 +345,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   getCategories();
+
+  function checkfilled() {
+    const categorySelect = document.getElementById("categorySelect").value;
+    const titleInput = document.getElementById("titleInput").value;
+    const fileupload = document.getElementById("fileInput").files[0];
+    if (!fileupload || !titleInput || categorySelect == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  const titleInput = document.getElementById("titleInput");
+  const select = document.getElementById("categorySelect");
+  const uploadButton = document.getElementById("uploadButton");
+  select.addEventListener("change", () => {
+    if (checkfilled() == true) {
+      uploadButton.classList.remove("bouton-gris");
+      uploadButton.classList.add("bouton-vert");
+    } else {
+      uploadButton.classList.remove("bouton-vert");
+      uploadButton.classList.add("bouton-gris");
+    }
+  });
+  titleInput.addEventListener("change", () => {
+    if (checkfilled() == true) {
+      uploadButton.classList.remove("bouton-gris");
+      uploadButton.classList.add("bouton-vert");
+    } else {
+      uploadButton.classList.remove("bouton-vert");
+      uploadButton.classList.add("bouton-gris");
+    }
+  });
+  fileupload.addEventListener("change", () => {
+    if (checkfilled() == true) {
+      uploadButton.classList.remove("bouton-gris");
+      uploadButton.classList.add("bouton-vert");
+    } else {
+      uploadButton.classList.remove("bouton-vert");
+      uploadButton.classList.add("bouton-gris");
+    }
+  });
 });
 
 /*********Bouton Valider Image Dynamique */
+// 1) Recup tout les inputs
+// 2) event sur le change
+// 3) regarder si c'est rempli (tous)

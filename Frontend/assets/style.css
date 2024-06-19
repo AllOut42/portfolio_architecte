@@ -551,6 +551,10 @@ form input[type="submit"] {
   cursor: pointer;
 }
 
+.bouton-gris:active {
+  background-color: rgba(179, 179, 179, 0.2);
+}
+
 .content button:active {
   background-color: rgba(14, 47, 40, 1);
 }
@@ -577,8 +581,20 @@ form input[type="submit"] {
 }
 
 /* section add image */
+.bouton-gris {
+  font-family: "Syne";
+  font-weight: 700;
+  margin: 30px 0 0;
+  color: white;
+  background-color: rgba(179, 179, 179, 1);
+  width: 60%;
+  text-align: center;
+  border-radius: 60px;
+  cursor: pointer;
+  border: none;
+}
 
-.content-step2 input[type="submit"] {
+.bouton-vert {
   font-family: "Syne";
   font-weight: 700;
   margin: 30px 0 0;
