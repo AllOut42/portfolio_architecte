@@ -72,26 +72,52 @@
           <div class="gallery"></div>
           <div class="modal" id="modale">
             <div class="content">
-              <span id="close">x</span>
+              <span id="close"><i class="fa-solid fa-xmark"></i></span>
               <p>Galerie photo</p>
               <div class="modalContent"></div>
               <button id="switch-addModale">Ajouter une photo</button>
             </div>
           </div>
           <div class="modal" id="add-modale">
-            <div class="content">
-              <span id="close-add">x</span>
-              <form class="content-step2">
-                <input type="file" value="250000000" />
+            <div class="content-add">
+              <div id="headModaleAdd">
+                <span id="switchToDel"
+                  ><i class="fa-solid fa-arrow-left fa-lg"></i
+                ></span>
+                <span id="close-add"><i class="fa-solid fa-xmark"></i></span>
+              </div>
+              <form id="uploadForm" class="content-step2">
+                <p id="titre-Modale2">Ajout photo</p>
+                <div class="box-addPicture">
+                  <span id="basePreview" class="flex">
+                    <i class="fa-regular fa-image fa-5x"></i>
+                  </span>
+                  <div id="previewContainer" class="hidden">
+                    <img id="imagePreview" src="" alt="Image Preview" />
+                  </div>
+                  <div class="file-upload" id="file-upload">
+                    <label for="fileInput" class="file-label"
+                      >+ Ajouter photo</label
+                    >
+                    <input
+                      type="file"
+                      id="fileInput"
+                      accept="image/png, image/jpeg"
+                    />
+                    <p>jpg, png : 4mo max</p>
+                  </div>
+                </div>
+                <label for="titleInput" class="labelTitle">Titre</label>
+                <input type="text" id="titleInput" />
+                <label for="categorySelect" class="labelTitle">Catégorie</label>
+                <select id="categorySelect"></select>
+                <div id="blank"></div>
                 <input
-                  type="file"
-                  id="my-image"
-                  accept="image/png, image/jpeg, image/gif"
+                  type="submit"
+                  class="bouton-gris"
+                  value="Valider"
+                  id="uploadButton"
                 />
-                <select>
-                  <option>LALALAL</option>
-                </select>
-                <input type="submit" value="Envoyer" />
               </form>
             </div>
           </div>
