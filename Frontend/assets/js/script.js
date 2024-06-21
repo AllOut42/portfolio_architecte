@@ -38,6 +38,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Suppression du toker a la fermeture de l'onglet ou du navigateur
+  window.addEventListener("beforeunload", function () {
+    localStorage.removeItem("token");
+  });
+
   /**Fgetfilters
    * Récupère la liste des filtres à partir du serveur et les affiche.
    */
@@ -83,102 +88,99 @@ document.addEventListener("DOMContentLoaded", () => {
     button.value = value;
     return button;
   }
-});
-/**
- * Écouteur d'événements pour l'événement DOMContentLoaded.
- * Récupère la liste des travaux et les affiche dans la galerie.
- */
 
-document.addEventListener("DOMContentLoaded", () => {
+  /**
+   * Écouteur d'événements pour l'événement DOMContentLoaded.
+   * Récupère la liste des travaux et les affiche dans la galerie.
+   */
+
   getWorks(0).then(() => console.log("Travaux chargés"));
-});
 
-/**
- * Récupère la liste des travaux à partir du serveur et les affiche dans la galerie.
- * @param {number} categoryId - L'ID de la catégorie pour filtrer les travaux.
- * @returns {Promise<void>}
- */
-async function getWorks(categoryId = 0) {
-  try {
-    const response = await fetch("http://localhost:5678/api/works");
-    const data = await response.json();
+  /**
+   * Récupère la liste des travaux à partir du serveur et les affiche dans la galerie.
+   * @param {number} categoryId - L'ID de la catégorie pour filtrer les travaux.
+   * @returns {Promise<void>}
+   */
+  async function getWorks(categoryId = 0) {
+    try {
+      const response = await fetch("http://localhost:5678/api/works");
+      const data = await response.json();
 
-    const gallery = document.querySelector(".gallery");
-    const modalContent = document.querySelector(".modalContent");
-    gallery.innerHTML = "";
-    modalContent.innerHTML = "";
+      const gallery = document.querySelector(".gallery");
+      const modalContent = document.querySelector(".modalContent");
+      gallery.innerHTML = "";
+      modalContent.innerHTML = "";
 
-    const figureModal = document.createElement("figure");
-    data.forEach(({ id, imageUrl, title }) => {
-      const figure_modal = document.createElement("figure");
-      const img = document.createElement("img");
-      const trash = document.createElement("i");
-      const trashContainer = document.createElement("div");
+      const figureModal = document.createElement("figure");
+      data.forEach(({ id, imageUrl, title }) => {
+        const figure_modal = document.createElement("figure");
+        const img = document.createElement("img");
+        const trash = document.createElement("i");
+        const trashContainer = document.createElement("div");
 
-      trash.className = "fas fa-trash-alt fa-sm";
-      img.src = imageUrl;
-      img.alt = title;
-      img.classList = "imgModal";
+        trash.className = "fas fa-trash-alt fa-sm";
+        img.src = imageUrl;
+        img.alt = title;
+        img.classList = "imgModal";
 
-      trashContainer.appendChild(trash);
+        trashContainer.appendChild(trash);
 
-      figure_modal.appendChild(img);
-      figure_modal.appendChild(trashContainer);
-      modalContent.appendChild(figure_modal);
+        figure_modal.appendChild(img);
+        figure_modal.appendChild(trashContainer);
+        modalContent.appendChild(figure_modal);
 
-      trash.addEventListener("click", async function (e) {
-        e.preventDefault();
-        try {
-          await fetch(`http://localhost:5678/api/works/${id}`, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          });
-          getWorks(categoryId);
-        } catch (error) {
-          console.error(error);
-        }
+        trash.addEventListener("click", async function (e) {
+          e.preventDefault();
+          try {
+            await fetch(`http://localhost:5678/api/works/${id}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            });
+            getWorks(categoryId);
+          } catch (error) {
+            console.error(error);
+          }
+        });
       });
-    });
 
-    modalContent.appendChild(figureModal);
+      modalContent.appendChild(figureModal);
 
-    const filterData = data.filter(
-      (work) => work.categoryId === Number(categoryId) || categoryId === 0
-    );
+      const filterData = data.filter(
+        (work) => work.categoryId === Number(categoryId) || categoryId === 0
+      );
 
-    const figures = filterData.map(({ imageUrl, title }) => {
-      const figure = document.createElement("figure");
-      figure.innerHTML += `
+      const figures = filterData.map(({ imageUrl, title }) => {
+        const figure = document.createElement("figure");
+        figure.innerHTML += `
         <img src="${imageUrl}" alt="${title}" />
         <figcaption>${title}</figcaption>
       `;
-      return figure;
-    });
+        return figure;
+      });
 
-    figures.forEach((figure) => gallery.appendChild(figure));
-  } catch (error) {
-    console.error(error);
+      figures.forEach((figure) => gallery.appendChild(figure));
+    } catch (error) {
+      console.error(error);
+    }
   }
-}
 
-/**
- * Met le bouton de filtre actif.
- * @param {HTMLButtonElement} button - Le bouton de filtre à mettre actif.
- */
-function setActiveFilter(button) {
-  document
-    .querySelectorAll(".filter-option")
-    .forEach((b) => b.classList.remove("active"));
-  button.classList.add("active");
-}
+  /**
+   * Met le bouton de filtre actif.
+   * @param {HTMLButtonElement} button - Le bouton de filtre à mettre actif.
+   */
+  function setActiveFilter(button) {
+    document
+      .querySelectorAll(".filter-option")
+      .forEach((b) => b.classList.remove("active"));
+    button.classList.add("active");
+  }
 
-/**
- * Écouteur d'événements pour l'événement DOMContentLoaded.
- * Gère l'affichage et la fonctionnalité des modales d'édition et d'ajout.
- */
-document.addEventListener("DOMContentLoaded", () => {
+  /**
+   * Écouteur d'événements pour l'événement DOMContentLoaded.
+   * Gère l'affichage et la fonctionnalité des modales d'édition et d'ajout.
+   */
   function resetModale() {
     const fileupload = document.getElementById("file-upload");
     const basePreview = document.getElementById("basePreview");
@@ -197,7 +199,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const modale = document.getElementById("modale");
-  const editModale = document.getElementById("editModaleBtn");
   const close = document.getElementById("close");
   const addModale = document.getElementById("add-modale");
   const switchtoadd = document.getElementById("switch-addModale");

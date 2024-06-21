@@ -225,6 +225,8 @@ li:hover {
 
 .gallery img {
   width: 100%;
+  height: 450px;
+  object-fit: cover;
 }
 #contact {
   width: 50%;
@@ -324,7 +326,7 @@ form input[type="text"] {
 }
 
 input[type="submit"]:active {
-  background-color: rgba(14, 47, 40, 1);
+  background-color: #80808050;
 }
 
 .login-case p {
@@ -333,7 +335,7 @@ input[type="submit"]:active {
 }
 
 footer {
-  background-color: white;
+  background-color: #ffffff;
 }
 
 footer nav ul {
@@ -552,11 +554,11 @@ form input[type="submit"] {
 }
 
 .bouton-gris:active {
-  background-color: rgba(179, 179, 179, 0.2);
+  background-color: #80808050;
 }
 
 .content button:active {
-  background-color: rgba(14, 47, 40, 1);
+  background-color: #80808050;
 }
 
 #close-add {
